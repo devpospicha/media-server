@@ -1,0 +1,78 @@
+{
+  "gop_cache": true,
+  "gop_buffer_size": 8192000,
+  "probe_timeout": 2000,
+  "write_timeout": 5000,
+  "mw_latency": 350,
+  "listen_ip": "0.0.0.0",
+  "public_ip": "127.0.0.1",
+  "idle_timeout": 60,
+  "receive_timeout": 60,
+  "debug": false,
+  "http": {
+    "port": 8080
+  },
+  "rtmp": {
+    "enable": true,
+    "port": 1935
+  },
+  "hls": {
+    "enable": false,
+    "segment_duration": 2,
+    "playlist_length": 10,
+    "dir": "../tmp"
+  },
+  "rtsp": {
+    "enable": false,
+    "port": [
+      554,
+      20000,
+      30000
+    ],
+    "password": "123456",
+    "transport": "UDP|TCP"
+  },
+  "webrtc": {
+    "enable": true,
+    "port": 8000,
+    "transport": "UDP"
+  },
+  "gb28181": {
+    "enable": false,
+    "port": [
+      50000,
+      60000
+    ],
+    "transport": "UDP|TCP"
+  },
+  "jt1078": {
+    "enable": false,
+    "port": 1078
+  },
+  "record": {
+    "enable": false,
+    "format": "flv",
+    "dir": "../record"
+  },
+  "hooks": {
+    "enable": false,
+    "timeout": 10,
+    "on_started": "http://localhost:9000/api/v1/hook/on_started",
+    "on_publish": "http://localhost:9000/api/v1/hook/on_publish",
+    "on_publish_done": "http://localhost:9000/api/v1/hook/on_publish_done",
+    "on_play": "http://localhost:9000/api/v1/hook/on_play",
+    "on_play_done": "http://localhost:9000/api/v1/hook/on_play_done",
+    "on_record": "http://localhost:9000/api/v1/hook/on_record",
+    "on_idle_timeout": "http://localhost:9000/api/v1/hook/on_idle_timeout",
+    "on_receive_timeout": "http://localhost:9000/api/v1/hook/on_receive_timeout"
+  },
+  "log": {
+    "file_logging": false,
+    "level": -1,
+    "name": "./logs/lkm.log",
+    "max_size": 10,
+    "max_backup": 100,
+    "max_age": 7,
+    "compress": false
+  }
+}

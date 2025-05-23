@@ -1,0 +1,14 @@
+go 1.24.3
+
+use (
+	./avformat
+	./flv
+	./live-server
+	./rtmp
+	./transport
+	./mpeg
+	./rtp
+	/Users/phearunum/Desktop/DevOps-M1/Tools/agener
+	/Users/phearunum/Desktop/DevOps-M1/Tools/metric
+	/Users/phearunum/Desktop/DevOps-M1/ffmpeg_videosnap/api-service
+)

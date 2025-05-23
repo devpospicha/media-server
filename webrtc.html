@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi FLV Video Player</title>
+</head>
+
+<body>
+    <div id="videoContainer"></div> <!-- Container for video elements -->
+
+    <!-- Include flv.js library from a CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/flv.js@latest"></script>
+
+    <script>
+        if (flvjs.isSupported()) {
+            // Array of video URLs
+            var videoUrls = [
+                //"https://live.wintocasinos.com/live/417a2f4797a83ff4e31f924ddf3275db.flv"
+                "http://127.0.0.1:8080/123.flv",
+                "ws://127.0.0.1:8080/123.flv",
+                //"http://127.0.0.1:8080/hls/123.rtc"
+            ];
+
+            var currentVideoIndex = 0; // Track the current video index
+            var videoContainer = document.getElementById('videoContainer');
+            var flvPlayers = []; // Array to hold FLV player instances
+
+            // Function to create a video element
+            function createVideoElement() {
+                var videoElement = document.createElement('video');
+                videoElement.controls = true; // Add controls to the video
+                videoElement.width = 720; // Set width
+                // videoElement.height = 720; // Set height
+                videoElement.autoplay = true; // Enable autoplay
+                videoContainer.appendChild(videoElement); // Add the video element to the container
+                return videoElement;
+            }
+
+            // Loop through the video URLs dynamically
+            for (let i = 0; i < videoUrls.length; i++) {
+                // Create a new video element
+                let videoElement = createVideoElement();
+
+                // Create a new FLV player for the video element
+                let flvPlayer = flvjs.createPlayer({
+                    type: 'flv',
+                    url: videoUrls[i] // Use the current video URL
+
+                });
+
+                // Attach the player to the video element
+                flvPlayer.attachMediaElement(videoElement);
+                flvPlayer.load();
+                flvPlayer.play();
+
+                // Push the player to the array for later use
+                flvPlayers.push(flvPlayer);
+
+                // Event listener for when the video ends
+                videoElement.addEventListener('ended', function () {
+                    // Destroy the current player instance
+                    flvPlayer.destroy();
+                    // Move to the next video
+                    currentVideoIndex = (currentVideoIndex + 1) % videoUrls.length;
+
+                    // Create a new player for the next video
+                    flvPlayer = flvjs.createPlayer({
+                        type: 'flv',
+                        url: videoUrls[currentVideoIndex],
+                        isLive: true
+
+                    });
+
+                    // Re-attach the new player to the same video element
+                    flvPlayer.attachMediaElement(videoElement);
+                    flvPlayer.load();
+                    flvPlayer.play();
+                });
+            }
+        } else {
+            alert("FLV.js is not supported on this browser.");
+        }
+    </script>
+</body>
+
+</html>
