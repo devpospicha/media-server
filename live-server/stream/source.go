@@ -743,6 +743,14 @@ func (s *PublishSource) CorrectTimestamp(packet *avformat.AVPacket) {
 	track := s.originTracks.Find(packet.CodecID)
 	duration := packet.GetDuration(packet.Timebase)
 
+	// Handle timestamp reset detection
+	if s.accumulateTimestamps && s.timestampModeDecided {
+		if track.Dts > packet.Dts && (track.Dts-packet.Dts > 2000) {
+			log.Sugar.Warnf("Timestamp reset detected for source %s. Disabling timestamp accumulation. Previous track DTS: %d, current packet DTS: %d", s.ID, track.Dts, packet.Dts)
+			s.accumulateTimestamps = false
+		}
+	}
+
 	// 根据duration来累加时间戳
 	if s.accumulateTimestamps {
 		offset := packet.Pts - packet.Dts
